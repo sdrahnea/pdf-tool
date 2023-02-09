@@ -1,6 +1,6 @@
-# Universal Data Processor
+# PDF tool
 
---- TBD
+A tool which manipulate PDF file: merge files, remove password.
 
 ## Summary
 1. Getting Started (Prerequisites, Installing)
