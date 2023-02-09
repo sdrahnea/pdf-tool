@@ -3,7 +3,7 @@
 A tool which manipulate PDF file: merge files, remove password.
 
 ## Summary
-2. Functionalities:
+1. Functionalities:
    - 2.1 File merging
    - 2.2 Remove PDF file's password
 2. Getting Started (Prerequisites, Installing)
