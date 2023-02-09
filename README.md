@@ -3,13 +3,15 @@
 A tool which manipulate PDF file: merge files, remove password.
 
 ## Summary
-1. Getting Started (Prerequisites, Installing)
-    - 1.1 Prerequisites
-    - 1.2 Database installation
-        - 1.2.1 H2
-        - 1.2.2 MySQL
-        - 1.2.3 PostgreSQL
-2. Running the tests
+2. Functionalities:
+   - 2.1 File merging
+   - 2.2 Remove PDF file's password
+2. Getting Started (Prerequisites, Installing)
+    - 2.1 Prerequisites
+    - 2.2 Database installation
+        - 2.2.1 H2
+        - 2.2.2 MySQL
+        - 2.2.3 PostgreSQL
 3. Deployment
    - Deployment & run on LINUX environment
    - Deployment & run on WINDOWS environment
@@ -21,26 +23,30 @@ A tool which manipulate PDF file: merge files, remove password.
 9. License
 10. Donation
 
-## 1. Getting Started
+## 1. Functionalities:
+### 1.1 File merging
+### 1.2 Remove PDF file's password
+
+## 2. Getting Started
 
 Clone or download a copy of this project.
 
-### 1.1 Prerequisites
+### 2.1 Prerequisites
 
-This project requires Java 1.8 / 11, Maven and at least one database (PostgreS, H2, MySql).
+This project requires Java, Maven and at least one database (PostgreS, H2, MySql).
 
 > **Warning**
-> Tested java versions: 1.8, 11
+> Tested Java versions: 1.8, 11
 
-### 1.2 Database installation
+### 2.2 Database installation
 
-#### 1.2.1 H2
+#### 2.2.1 H2
 No installation is required.
 The `spring.datasource.url` is the one required property which should be set. By default, the 
 username is `sa` with empty password. Two modes: in memory and file storage. See the `application.properties`
 file for more details related configuration.
 
-#### 1.2.2 MySQL 
+#### 2.2.2 MySQL 
 
 ```
 CREATE DATABSE fms;
@@ -52,7 +58,7 @@ ALTER USER '${USER}'@'localhost' IDENTIFIED WITH mysql_native_password BY '${PAS
 -- where ${USER} and ${PASSWORD} should be provided. 
 ```
 
-#### 1.2.3 Postgres
+#### 2.2.3 Postgres
 Install PostgreSQL. it is required to create a database:
 
 Please, run the following commands if it is the case:
@@ -69,10 +75,6 @@ To create the JAR file please use the following command:
 ```
 mvn clean package
 ```
-
-## 2. Running the tests
-
-This project does not have any kind of tests :).
 
 ## 3. Deployment
 
