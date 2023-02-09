@@ -28,6 +28,7 @@ Clone or download a copy of this project.
 ### 1.1 Prerequisites
 
 This project requires Java 1.8, Maven and at least one database (PostgreS, H2, MySql).
+Tested java versions: 1.8, 11
 
 ### 1.2 Database installation
 
