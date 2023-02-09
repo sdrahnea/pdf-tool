@@ -1,8 +1,13 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
-## [1.0.4] - 2021-08-XX [Unreleased]
+## [1.0.4] - 2023-MM-DD [Unreleased]
 ### Added
+- 
+
+## [1.0.4] - 2023-02-09
+### Added
+- file decryption / encryption
 - constraint file retrieve / store by tenant
 
 ### Fixed
