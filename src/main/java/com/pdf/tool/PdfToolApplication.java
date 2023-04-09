@@ -10,11 +10,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 /**
  * Created by sdrahnea
  */
-@EnableSwagger2
-@EnableAutoConfiguration
-@SpringBootApplication
-@EnableJpaRepositories
-@ComponentScan
 public class PdfToolApplication {
 
     public static void main(String[] args) {
