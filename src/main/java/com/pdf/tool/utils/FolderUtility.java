@@ -51,8 +51,4 @@ public class FolderUtility {
         });
     }
 
-    public static void main(String[] args) throws IOException {
-        String folderPath = "D:\\A13\\Sergiu\\2026-02-13\\Android\\data";
-        removeEmptySubfolders(folderPath);
-    }
 }
