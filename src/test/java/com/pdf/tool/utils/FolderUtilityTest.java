@@ -23,7 +23,8 @@ class FolderUtilityTest {
     void removesNestedEmptyFoldersAndKeepsFilesAndRoot() throws IOException {
         Path emptyTree = Files.createDirectories(root.resolve("empty").resolve("nested"));
         Path nonEmpty = Files.createDirectories(root.resolve("kept").resolve("nested"));
-        Path file = Files.createFile(nonEmpty.resolve("document.pdf"));
+        Path file = Files.write(nonEmpty.resolve("document.pdf"), new byte[]{1});
+        Path emptyFile = Files.createFile(nonEmpty.resolve("empty.pdf"));
         Path emptySibling = Files.createDirectory(root.resolve("kept").resolve("empty"));
 
         FolderUtility.removeEmptySubfolders(root);
@@ -31,6 +32,7 @@ class FolderUtilityTest {
         assertFalse(Files.exists(emptyTree));
         assertFalse(Files.exists(root.resolve("empty")));
         assertFalse(Files.exists(emptySibling));
+        assertFalse(Files.exists(emptyFile));
         assertTrue(Files.exists(file));
         assertTrue(Files.isDirectory(root));
     }
@@ -44,9 +46,21 @@ class FolderUtilityTest {
     }
 
     @Test
+    void removesEmptyFilesAndTheirEmptyRoot() throws IOException {
+        Path emptyRoot = Files.createDirectory(root.resolve("empty-root"));
+        Path nested = Files.createDirectories(emptyRoot.resolve("nested").resolve("child"));
+        Files.createFile(emptyRoot.resolve("empty.txt"));
+        Files.createFile(nested.resolve("empty.pdf"));
+
+        FolderUtility.removeEmptySubfolders(emptyRoot);
+
+        assertFalse(Files.exists(emptyRoot));
+    }
+
+    @Test
     void acceptsStringFolderPath() throws IOException {
         Path empty = Files.createDirectories(root.resolve("empty").resolve("nested"));
-        Path file = Files.createFile(root.resolve("file"));
+        Path file = Files.write(root.resolve("file"), new byte[]{1});
 
         FolderUtility.removeEmptySubfolders(root.toString());
 
@@ -57,7 +71,9 @@ class FolderUtilityTest {
         assertThrows(NoSuchFileException.class,
                 () -> FolderUtility.removeEmptySubfolders(root.resolve("missing").toString()));
 
-        Path emptyRoot = Files.createDirectories(root.resolve("empty-root").resolve("nested")).getParent();
+        Path nested = Files.createDirectories(root.resolve("empty-root").resolve("nested"));
+        Files.createFile(nested.resolve("empty"));
+        Path emptyRoot = nested.getParent();
         FolderUtility.removeEmptySubfolders(emptyRoot.toString());
         assertFalse(Files.exists(emptyRoot));
     }
@@ -75,9 +91,12 @@ class FolderUtilityTest {
     void doesNotFollowSymbolicLinks() throws IOException {
         Path scan = Files.createDirectory(root.resolve("scan"));
         Path target = Files.createDirectories(root.resolve("target").resolve("child"));
+        Path targetFile = Files.createFile(target.resolve("empty"));
         Path link = scan.resolve("link");
+        Path fileLink = scan.resolve("file-link");
         try {
             Files.createSymbolicLink(link, root.resolve("target"));
+            Files.createSymbolicLink(fileLink, targetFile);
         } catch (UnsupportedOperationException | SecurityException | IOException exception) {
             Assumptions.assumeTrue(false, "Symbolic links are unavailable: " + exception);
         }
@@ -86,6 +105,7 @@ class FolderUtilityTest {
         FolderUtility.removeEmptySubfolders(scan);
 
         assertTrue(Files.exists(link, LinkOption.NOFOLLOW_LINKS));
-        assertTrue(Files.isDirectory(target));
+        assertTrue(Files.exists(fileLink, LinkOption.NOFOLLOW_LINKS));
+        assertTrue(Files.exists(targetFile));
     }
 }

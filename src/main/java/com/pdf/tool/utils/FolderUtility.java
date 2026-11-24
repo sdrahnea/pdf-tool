@@ -13,20 +13,20 @@ import java.nio.file.attribute.BasicFileAttributes;
 
 public class FolderUtility {
     /**
-     * Removes empty directories within the directory identified by {@code folder},
+     * Removes empty files and directories within the directory identified by {@code folder},
      * including the root if it becomes empty.
      *
-     * @throws IOException if the folder cannot be accessed or a directory cannot be removed
+     * @throws IOException if the folder cannot be accessed or an entry cannot be removed
      */
     public static void removeEmptySubfolders(String folder) throws IOException {
         removeEmptySubfolders(Paths.get(folder));
     }
 
     /**
-     * Removes empty directories within {@code folder}, including the root and directories
-     * that become empty after their children are removed. Symbolic links are preserved.
+     * Removes zero-byte regular files and empty directories within {@code folder},
+     * including the root if it becomes empty. Symbolic links are preserved.
      *
-     * @throws IOException if the folder cannot be accessed or a directory cannot be removed
+     * @throws IOException if the folder cannot be accessed or an entry cannot be removed
      */
     public static void removeEmptySubfolders(Path folder) throws IOException {
         BasicFileAttributes attributes = Files.readAttributes(
@@ -36,6 +36,15 @@ public class FolderUtility {
         }
 
         Files.walkFileTree(folder, new SimpleFileVisitor<Path>() {
+            @Override
+            public FileVisitResult visitFile(Path file, BasicFileAttributes attributes) throws IOException {
+                if (attributes.isRegularFile() && attributes.size() == 0) {
+                    System.out.println(file.toString());
+                    Files.delete(file);
+                }
+                return FileVisitResult.CONTINUE;
+            }
+
             @Override
             public FileVisitResult postVisitDirectory(Path directory, IOException exception) throws IOException {
                 if (exception != null) {
@@ -50,5 +59,7 @@ public class FolderUtility {
             }
         });
     }
+
+
 
 }
